@@ -26,5 +26,10 @@ pipeline {
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
+        stage('Building image'){
+            steps {
+                sh 'docker build -t ekartshopping:latest .'
+            }
+        }
     }
 }
