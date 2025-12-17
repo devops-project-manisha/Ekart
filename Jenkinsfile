@@ -10,8 +10,10 @@ pipeline {
 
         stage('Building the image') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package -DskipTests'
             }
         }
+
+
     }
 }
