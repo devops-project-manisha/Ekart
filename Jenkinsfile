@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                deleteDir()
                 git branch: 'main', url: 'https://github.com/devops-project-manisha/Ekart.git'
             }
         }
@@ -20,7 +21,7 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
-                dependencyCheck additionalArguments: '--scan ./',
+                dependencyCheck additionalArguments: '--scan pom.xml',
                                 odcInstallation: 'Dependency-Check'
 
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
