@@ -94,5 +94,14 @@ pipeline {
             }
         }
 
+        stage('Deploying to Kubernetes') {
+            steps {
+                sh '''
+                  kubectl apply -f deploymentservice.yml
+                  kubectl apply -f service.yml
+                '''
+            }
+        }
+
     }
 }
