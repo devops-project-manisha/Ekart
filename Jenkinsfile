@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         ACR_LOGIN_SERVER = "devopsproject1.azurecr.io"
+        IMAGE_NAME = "ekartshopping"
+        TAG = "latest"
     }
 
     options {
@@ -10,10 +12,12 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 deleteDir()
-                git branch: 'main', url: 'https://github.com/devops-project-manisha/Ekart.git'
+                git branch: 'main',
+                    url: 'https://github.com/devops-project-manisha/Ekart.git'
             }
         }
 
@@ -40,16 +44,27 @@ pipeline {
 
         stage('Login to ACR') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'acr-creds',
-                    usernameVariable: 'ACR_USER',
-                    passwordVariable: 'ACR_PASS'
-                )]) {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'acr-creds',
+                        usernameVariable: 'ACR_USER',
+                        passwordVariable: 'ACR_PASS'
+                    )
+                ]) {
                     sh '''
                       echo $ACR_PASS | docker login $ACR_LOGIN_SERVER \
                       -u $ACR_USER --password-stdin
                     '''
                 }
+            }
+        }
+
+        stage('Tag Image') {
+            steps {
+                sh '''
+                  docker tag ${IMAGE_NAME}:${TAG} \
+                  $ACR_LOGIN_SERVER/${IMAGE_NAME}:${TAG}
+                '''
             }
         }
     }
