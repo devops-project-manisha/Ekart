@@ -98,7 +98,9 @@ pipeline {
             steps {
                 sh '''
                   # Delete existing Deployment if it exists (avoids immutable field error)
-                  kubectl delete deployment ekart-deployment || true
+                  kubectl delete deployment ekart-deploymentt || true
+                  # Delete existing Service if it exists
+                  kubectl delete service ekart-servicee || true
                   # Apply Deployment and Service
                   kubectl apply -f deploymentservice.yml
                   kubectl apply -f service.yml
